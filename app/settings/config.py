@@ -1,0 +1,1 @@
+DB_URL = 'postgresql://admin:1234@172.28.60.169:5432/missions_db'
