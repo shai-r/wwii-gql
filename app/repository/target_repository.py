@@ -22,6 +22,10 @@ def find_targets_by_target_type_id(target_type_id: int) -> List[Target]:
     with session_maker() as session:
         return session.query(Target).filter(Target.target_type_id == target_type_id).all()
 
+def find_targets_by_mission_id(mission_id) -> List[Target]:
+    with session_maker() as session:
+        return session.query(Target).filter(Target.mission_id == mission_id).all()
+
 def find_max_target_id():
     with session_maker() as session:
         return session.query(Target).order_by(desc(Target.target_id)).first().target_id + 1
