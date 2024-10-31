@@ -1,10 +1,12 @@
 from typing import List
+
+import toolz
 from returns.maybe import Maybe
 from datetime import date
 from psycopg2 import Error
 
 from app.db.database import session_maker
-from app.db.models import Mission
+from app.db.models import Mission, Target
 
 
 def find_mission_by_id(mission_id: int) -> Maybe[Mission]:
@@ -19,18 +21,22 @@ def find_missions_by_date_range(start_date: date, end_date: date) -> List[Missio
             Mission.mission_date > start_date, Mission.mission_date < end_date
         )
 
-def find_missions_by_target_ids(target_ids: List[int]) -> List[Mission]:
+def find_missions_by_targets(targets: List[Target]) -> List[Mission]:
+    mission_ids = {t.mission_id for t in targets}
     with session_maker() as session:
-        return session.query(Mission).filter(any(Mission.mission_id == t for t in target_ids))
+        return session.query(Mission).filter(Mission.mission_id.in_(mission_ids)).all()
 
+def find_max_mission_id() -> int:
+    with session_maker() as session:
+        return session.query(Mission).filter(max(Mission.mission_id)) + 1
 
-# def create_new_country(new_country: Country):
-#     with session_maker() as session:
-#         session.add(new_country)
-#         session.commit()
-#         session.refresh(new_country)
-#         return new_country
-#
+def create_new_mission(new_mission: Mission):
+    with session_maker() as session:
+        new_mission.mission_id = find_max_mission_id()
+        session.add(new_mission)
+        session.commit()
+        return new_mission
+
 # def update_country(country: Country):
 #     with session_maker() as session:
 #         if country.id is None:
