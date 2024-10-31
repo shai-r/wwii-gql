@@ -70,13 +70,13 @@ def update_mission(mission: Mission):
                 mission.attacking_aircraft == updated.attacking_aircraft or
                 mission.airborne_aircraft == updated.airborne_aircraft
                 )
-#
-# def delete_country(country_id: int):
-#     with session_maker() as session:
-#         country_to_delete = session.query(Country).filter(Country.id == country_id).first()
-#         if not country_to_delete:
-#             raise Error('not country for this id. SR')
-#         session.delete(country_to_delete)
-#         session.commit()
-#         deleted = find_country_by_id(country_id) is None
-#         return deleted
+
+def delete_mission(mission_id: int) -> bool:
+    with session_maker() as session:
+        mission_to_delete = session.query(Mission).filter(Mission.mission_id == mission_id).first()
+        if not mission_to_delete:
+            raise Error('not mission for this id. SR')
+        session.delete(mission_to_delete)
+        session.commit()
+    deleted = find_mission_by_id(mission_id).value_or(None) is None
+    return deleted

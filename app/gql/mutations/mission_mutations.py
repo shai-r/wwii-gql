@@ -2,7 +2,7 @@ from graphene import Mutation, Field, Float, Date, Int, Boolean
 
 from app.db.models import Mission
 from app.gql.types.mission_type import MissionType
-from app.repository.mission_repository import create_new_mission, update_mission
+from app.repository.mission_repository import create_new_mission, update_mission, delete_mission
 
 
 class AddMission(Mutation):
@@ -81,23 +81,16 @@ class UpdateMission(Mutation):
             aircraft_lost=aircraft_lost
         )
         return UpdateMission(success=update_mission(mission_to_update))
-#
-#
-# class DeleteCountry(Mutation):
-#     class Arguments:
-#         country_id = Int()
-#
-#     success = Boolean()
-#
-#     @staticmethod
-#     def mutate(root, info, country_id):
-#         return DeleteCountry(success=delete_country(country_id))
-#
-#
-#
-#
-#
-#
-#
+
+
+class DeleteMission(Mutation):
+    class Arguments:
+        mission_id = Int(required=True)
+
+    success = Boolean()
+
+    @staticmethod
+    def mutate(root, info, mission_id):
+        return DeleteMission(success=delete_mission(mission_id))
 
 
