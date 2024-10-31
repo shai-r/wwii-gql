@@ -15,3 +15,7 @@ def find_targets_by_cities_ids(cities_ids: List[int]) -> List[Target]:
 def find_targets_by_target_industry(target_industry: str) -> List[Target]:
     with session_maker() as session:
         return session.query(Target).filter(Target.target_industry == target_industry)
+
+def find_targets_by_target_type_id(target_type_id: int) -> List[Target]:
+    with session_maker() as session:
+        return session.query(Target).filter(Target.target_type_id == target_type_id)
