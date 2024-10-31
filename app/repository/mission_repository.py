@@ -1,9 +1,7 @@
 from typing import List
-
-import toolz
+from sqlalchemy import desc
 from returns.maybe import Maybe
 from datetime import date
-from psycopg2 import Error
 
 from app.db.database import session_maker
 from app.db.models import Mission, Target
@@ -28,13 +26,14 @@ def find_missions_by_targets(targets: List[Target]) -> List[Mission]:
 
 def find_max_mission_id() -> int:
     with session_maker() as session:
-        return session.query(Mission).filter(max(Mission.mission_id)) + 1
+        return session.query(Mission).order_by(desc(Mission.mission_id)).first().mission_id + 1
 
 def create_new_mission(new_mission: Mission):
     with session_maker() as session:
         new_mission.mission_id = find_max_mission_id()
         session.add(new_mission)
         session.commit()
+        session.refresh(new_mission)
         return new_mission
 
 # def update_country(country: Country):
