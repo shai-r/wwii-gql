@@ -2,16 +2,10 @@ from graphene import ObjectType, Int, String, List, Field
 
 from app.repository.mission_repository import find_mission_by_id
 
-
-# target_id = Column(Integer, primary_key=True, autoincrement=True)
-#    mission_id = Column(Integer, ForeignKey('missions.id'))
-#    city_id = Column(Integer, ForeignKey('cities.id'))
-#    target_type_id = Column(Integer, ForeignKey('target_types.id'))
-#    target_priority = Column(Integer)
-
 class TargetType(ObjectType):
     target_id = Int()
     mission_id = Int()
+    target_industry = String()
     city_id = Int()
     target_type_id = Int()
     target_priority = Int()
