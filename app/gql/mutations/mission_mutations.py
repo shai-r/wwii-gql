@@ -1,8 +1,8 @@
-from graphene import Mutation, String, Int, Field, Boolean, Float, Date
+from graphene import Mutation, Field, Float, Date, Int, Boolean
 
-from app.db.models import Country, Mission
+from app.db.models import Mission
 from app.gql.types.mission_type import MissionType
-from app.repository.mission_repository import create_new_mission
+from app.repository.mission_repository import create_new_mission, update_mission
 
 
 class AddMission(Mutation):
@@ -22,13 +22,13 @@ class AddMission(Mutation):
     def mutate(root,
                info,
                mission_date,
-               airborne_aircraft,
-               attacking_aircraft,
-               bombing_aircraft,
-               aircraft_returned,
-               aircraft_failed,
-               aircraft_damaged,
-               aircraft_lost):
+               airborne_aircraft=None,
+               attacking_aircraft=None,
+               bombing_aircraft=None,
+               aircraft_returned=None,
+               aircraft_failed=None,
+               aircraft_damaged=None,
+               aircraft_lost=None):
         new_mission = Mission(
             mission_date=mission_date,
             airborne_aircraft=airborne_aircraft,
@@ -41,19 +41,46 @@ class AddMission(Mutation):
         )
         return AddMission(mission=create_new_mission(new_mission))
 
-# class UpdateCountry(Mutation):
-#     class Arguments:
-#         country_id = Int(required=True)
-#         region = String()
-#         capital = String()
-#         name = String()
-#
-#     success = Boolean()
-#
-#     @staticmethod
-#     def mutate(root, info, country_id, region, capital, name):
-#         country_to_update = Country(id=country_id, region=region, capital=capital, name=name)
-#         return UpdateCountry(success=update_country(country_to_update))
+class UpdateMission(Mutation):
+    class Arguments:
+        mission_id = Int(required=True)
+        mission_date = Date(required=False)
+        airborne_aircraft = Float(required=False)
+        attacking_aircraft = Float(required=False)
+        bombing_aircraft = Float(required=False)
+        aircraft_returned = Float(required=False)
+        aircraft_failed = Float(required=False)
+        aircraft_damaged = Float(required=False)
+        aircraft_lost = Float(required=False)
+
+    success = Boolean()
+
+    @staticmethod
+    def mutate(
+            root,
+            info,
+            mission_id,
+            mission_date=None,
+            airborne_aircraft=None,
+            attacking_aircraft=None ,
+            bombing_aircraft=None,
+            aircraft_returned=None,
+            aircraft_failed=None,
+            aircraft_damaged=None,
+            aircraft_lost=None
+    ):
+        mission_to_update = Mission(
+            mission_id=mission_id,
+            mission_date=mission_date,
+            airborne_aircraft=airborne_aircraft,
+            attacking_aircraft=attacking_aircraft,
+            bombing_aircraft=bombing_aircraft,
+            aircraft_returned=aircraft_returned,
+            aircraft_failed=aircraft_failed,
+            aircraft_damaged=aircraft_damaged,
+            aircraft_lost=aircraft_lost
+        )
+        return UpdateMission(success=update_mission(mission_to_update))
 #
 #
 # class DeleteCountry(Mutation):

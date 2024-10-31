@@ -1,4 +1,4 @@
-from graphene import ObjectType, Int, String, List
+from graphene import ObjectType, Int, String
 
 
 

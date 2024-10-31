@@ -1,4 +1,4 @@
-from graphene import ObjectType, Int, String, List, Field
+from graphene import ObjectType, Int, String
 
 
 class CityType(ObjectType):

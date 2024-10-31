@@ -1,6 +1,4 @@
-from graphene import ObjectType, Int, String, List
-
-import app.gql.types.target_type
+from graphene import ObjectType, Int, String
 
 
 class TargetTypeType(ObjectType):

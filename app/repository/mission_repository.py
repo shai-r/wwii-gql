@@ -1,4 +1,6 @@
 from typing import List
+
+from psycopg2 import Error
 from sqlalchemy import desc
 from returns.maybe import Maybe
 from datetime import date
@@ -36,24 +38,38 @@ def create_new_mission(new_mission: Mission):
         session.refresh(new_mission)
         return new_mission
 
-# def update_country(country: Country):
-#     with session_maker() as session:
-#         if country.id is None:
-#             raise Error('No country ID. Which country do you need to update? SR')
-#         country_to_update = session.query(Country).filter(Country.id == country.id).first()
-#         if not country_to_update:
-#             raise Error('not country for this id. SR')
-#         if country.name:
-#             country_to_update.name = country.name
-#         if country.region:
-#             country_to_update.region = country.region
-#         if country.capital:
-#             country_to_update.capital = country.capital
-#         session.commit()
-#         updated = find_country_by_id(country.id)
-#         return (country.name == updated.name or
-#                 country.region == updated.region or
-#                 country.capital == updated.capital)
+def update_mission(mission: Mission):
+    with session_maker() as session:
+        mission_to_update = session.query(Mission).filter(Mission.mission_id == mission.mission_id).first()
+        if not mission_to_update:
+            raise Error('not country for this id. SR')
+        if mission.mission_date:
+            mission_to_update.mission_date = mission.mission_date
+        if mission.aircraft_lost:
+            mission_to_update.aircraft_lost = mission.aircraft_lost
+        if mission.aircraft_failed:
+            mission_to_update.aircraft_failed = mission.aircraft_failed
+        if mission.airborne_aircraft:
+            mission_to_update.airborne_aircraft = mission.airborne_aircraft
+        if mission.bombing_aircraft:
+            mission_to_update.bombing_aircraft = mission.bombing_aircraft
+        if mission.aircraft_returned:
+            mission_to_update.aircraft_returned = mission.aircraft_returned
+        if mission.attacking_aircraft:
+            mission_to_update.attacking_aircraft = mission.attacking_aircraft
+        if mission.aircraft_damaged:
+            mission_to_update.aircraft_damaged = mission.aircraft_damaged
+        session.commit()
+        updated = find_mission_by_id(mission.mission_id).unwrap()
+        return (mission.mission_date == updated.mission_date or
+                mission.aircraft_lost == updated.aircraft_lost or
+                mission.aircraft_failed == updated.aircraft_failed or
+                mission.bombing_aircraft == updated.bombing_aircraft or
+                mission.aircraft_returned == updated.aircraft_returned or
+                mission.aircraft_damaged == updated.aircraft_damaged or
+                mission.attacking_aircraft == updated.attacking_aircraft or
+                mission.airborne_aircraft == updated.airborne_aircraft
+                )
 #
 # def delete_country(country_id: int):
 #     with session_maker() as session:

@@ -1,4 +1,4 @@
-from graphene import ObjectType, Int, String, List, Field
+from graphene import ObjectType, Int, String, Field
 
 from app.repository.mission_repository import find_mission_by_id
 
