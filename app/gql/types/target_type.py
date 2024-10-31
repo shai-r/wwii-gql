@@ -17,8 +17,8 @@ class TargetType(ObjectType):
     target_priority = Int()
 
     mission = Field('app.gql.types.mission_type.MissionType')
-    city = Field('app.gql.types.city_type.CityType')
-    target_type = Field('app.gql.types.target_type_type.TargetTypeType')
+    # city = Field('app.gql.types.city_type.CityType')
+    # target_type = Field('app.gql.types.target_type_type.TargetTypeType')
 
     @staticmethod
     def resolve_mission(root, info):

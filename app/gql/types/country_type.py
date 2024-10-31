@@ -7,7 +7,7 @@ class CountryType(ObjectType):
     country_name = String()
 
 
-    cities = List('app.gql.types.city_type.CityType')
+    # cities = List('app.gql.types.city_type.CityType')
 
     # @staticmethod
     # def resolve_cities(root, info):

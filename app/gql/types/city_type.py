@@ -8,8 +8,8 @@ class CityType(ObjectType):
     latitude = String()
     longitude = String()
 
-    country = Field('app.gql.types.country_type.CountryType')
-    targets = List('app.gql.types.target_type.TargetType')
+    # country = Field('app.gql.types.country_type.CountryType')
+    # targets = List('app.gql.types.target_type.TargetType')
 
     # @staticmethod
     # def resolve_country(root, info):

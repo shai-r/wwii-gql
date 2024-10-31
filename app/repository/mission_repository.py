@@ -1,5 +1,6 @@
-from typing import  List
+from typing import List
 from returns.maybe import Maybe
+from datetime import date
 from psycopg2 import Error
 
 from app.db.database import session_maker
@@ -9,12 +10,15 @@ from app.utils.date_utils import is_date_in_date_range
 
 def find_mission_by_id(mission_id: int) -> Maybe[Mission]:
     with session_maker() as session:
-        return session.query(Mission).filter(Mission.mission_id == mission_id).first()
+        return Maybe.from_optional(
+            session.query(Mission).filter(Mission.mission_id == mission_id).first())
 
-def find_missions_by_date_range(start_date: str, end_date: str) -> List[Mission]:
+
+def find_missions_by_date_range(start_date: date, end_date: date) -> List[Mission]:
     with session_maker() as session:
-        return session.query(Mission).filter(is_date_in_date_range(str(Mission.mission_date), start_date, end_date))
-
+        return session.query(Mission).filter(
+            Mission.mission_date > start_date, Mission.mission_date < end_date
+        )
 
 # def create_new_country(new_country: Country):
 #     with session_maker() as session:
