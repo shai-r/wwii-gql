@@ -5,7 +5,6 @@ from psycopg2 import Error
 
 from app.db.database import session_maker
 from app.db.models import Mission
-from app.utils.date_utils import is_date_in_date_range
 
 
 def find_mission_by_id(mission_id: int) -> Maybe[Mission]:
@@ -19,6 +18,11 @@ def find_missions_by_date_range(start_date: date, end_date: date) -> List[Missio
         return session.query(Mission).filter(
             Mission.mission_date > start_date, Mission.mission_date < end_date
         )
+
+def find_missions_by_target_ids(target_ids: List[int]) -> List[Mission]:
+    with session_maker() as session:
+        return session.query(Mission).filter(any(Mission.mission_id == t for t in target_ids))
+
 
 # def create_new_country(new_country: Country):
 #     with session_maker() as session:
